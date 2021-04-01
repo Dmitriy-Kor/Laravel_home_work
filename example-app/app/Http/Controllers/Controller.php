@@ -31,10 +31,10 @@ class Controller extends BaseController
      * @var array|string[]
      */
     protected  array $categoryList = [
-        'Top news',
-        'Politics',
-        'Sport',
-        'Economy',
-        'Culture',
+        ['Top news', 'top.png'],
+        ['Politics' , 'politics.jpeg'],
+        ['Sport', 'sport.jpeg'],
+        ['Economy', 'economic.jpeg'],
+        ['Culture', 'culture.jpeg'],
     ];
 }

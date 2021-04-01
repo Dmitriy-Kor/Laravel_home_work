@@ -19,18 +19,12 @@ use \App\Http\Controllers\Admin\CategoryController as AdminCategoriesController;
 use \App\Http\Controllers\CategoryController;
 use \App\Http\Controllers\HomeController;
 
-Route::get('/hello/{name}', function (string $name): string {
-    return "Hello, {$name}!";
-});
-
-Route::get('/info', function (): string {
-    return "Здесь будет страничка info";
-});
 
 // роутинг для Админа
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // создаем префикс Admin для запросов // добавляем нейминг
     Route::resource('/news', AdminNewsController::class);
     Route::resource('/categories', AdminCategoriesController::class);
+    Route::resource('/categories/{id}/edit', AdminCategoriesController::class);
 });
 
 Route::get('/news', [NewsController::class, 'index']
@@ -45,4 +39,5 @@ Route::get('/categories/show/{id}', [CategoryController::class, 'show'])
     ->where('id', '\d')
     ->name('categories.show');
 
-Route::get('/', [HomeController::class, 'index']);
+//Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [NewsController::class, 'index']);

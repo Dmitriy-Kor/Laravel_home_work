@@ -15,10 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        echo '<h2>Список категорий в админке</h2>';
-        foreach ($this->categoryList as $category) {
-            echo "<h3>$category</h3>";
-        }
+        return view( 'admin.category.index', ['categoryList'=> $this->categoryList]);
     }
 
     /**
@@ -28,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view( 'createCategoryForm');
+        return view( 'admin.category.create');
     }
 
     /**
