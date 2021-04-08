@@ -25,8 +25,8 @@
                     <td>{{$category[0]}}</td>
                     <td>{{now()}}</td>
                     <td>
-                        <a href="#">Редактировать</a>
-                        {{--                            <a href="{{ route('admin.categories.edit', ['id' => $key]) }}">Редактировать</a>--}}
+{{--                        <a href="#">Редактировать</a>--}}
+                                                    <a href="{{ route('admin.categories.edit', ['category' => $key]) }}">Редактировать</a>
                         {{--                        думаю проблема с роутом для admin, как передать id?--}}
                         <a href="#">Удалить</a>
                     </td>

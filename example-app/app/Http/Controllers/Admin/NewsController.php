@@ -25,7 +25,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view( 'admin.news.create');
+        return view( 'admin.news.create',  ['categoryList'=> $this->categoryList]);
     }
 
     /**
@@ -36,7 +36,13 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'min:2'],
+            'slug' => ['required', 'string', 'min:2'],
+            'description' => ['required', 'string', 'min:2'],
+            ]);
+        $dataFields = $request->only('title', 'slug', 'description');
+        dump($dataFields);
     }
 
     /**
@@ -58,7 +64,8 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        return view( 'admin.news.edit', ['id' => $id]);
+        return view( 'admin.news.edit', ['news' => $id]);
+
     }
 
     /**
@@ -70,8 +77,12 @@ class NewsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //$dataFields = $request->only('title', 'author', 'text');
+        $dataFields = $request->all();
+        dump($id, $dataFields);
     }
+
+
 
     /**
      * Remove the specified resource from storage.

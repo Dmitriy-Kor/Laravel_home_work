@@ -6,12 +6,21 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row">
-        <form>
-            <p></p>
-            <input type="text" placeholder="Заголовок">
-            <input type="text" placeholder="Автор">
-            <input type="submit" value="Изменить">
+
+    <div class="col-8">
+        <form method="post" action="{{route('admin.categories.update', ['category' => $category])}}">
+            @csrf
+            <div class="form-group">
+                <label for="title">Загаловок</label>
+                <input type="text" id="title" name="title" placeholder="Заголовок" class="form-control" value="{{old('title')}}">
+            </div>
+            <div class="form-group">
+                <label for="title">Автор</label>
+                <input type="text" id="author" name="author" placeholder="Автор" class="form-control" value="{{old('author')}}">
+            </div>
+            <br>
+            <button type="submit" class="btn btn-success">Сохранить</button>
+
         </form>
     </div>
 

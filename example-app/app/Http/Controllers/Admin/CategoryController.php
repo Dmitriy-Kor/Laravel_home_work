@@ -36,7 +36,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'min:2'],
+            'slug' => ['required', 'string', 'min:2']
+        ]);
+        $dataFields = $request->only('title', 'slug');
+        dump($dataFields);
     }
 
     /**
@@ -58,7 +63,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        return '<h2>Редактирование категорий</h2>';
+        return view( 'admin.category.edit', ['category' => $id]);
     }
 
     /**

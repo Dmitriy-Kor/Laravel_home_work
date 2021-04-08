@@ -25,8 +25,8 @@
                         <td>{{$news}}</td>
                         <td>{{now()}}</td>
                         <td>
-                            <a href="#">Редактировать</a>
-{{--                            <a href="{{ route('admin.news.edit', ['id' => $key]) }}">Редактировать</a>--}}
+{{--                            <a href="#">Редактировать</a>--}}
+                            <a href="{{ route('admin.news.edit', ['news' => $key]) }}">Редактировать</a>
                             <a href="#">Удалить</a>
                         </td>
                     </tr>
