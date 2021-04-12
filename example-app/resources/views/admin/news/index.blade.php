@@ -14,19 +14,21 @@
             <tr>
                 <th>ID</th>
                 <th>Заголовок</th>
+                <th>Статус</th>
                 <th>Дата добавления</th>
                 <th>Действия</th>
             </tr>
             </thead>
                 <tbody>
-                @forelse($newsList as $key => $news)
+                @forelse($newsList as $news)
                     <tr>
-                        <td>{{$key}}</td>
-                        <td>{{$news}}</td>
-                        <td>{{now()}}</td>
+                        <td>{{$news->id}}</td>
+                        <td>{{$news->title}}</td>
+                        <td>{{$news->status}}</td>
+                        <td>{{$news->created_at ?? now()}}</td>
                         <td>
 {{--                            <a href="#">Редактировать</a>--}}
-                            <a href="{{ route('admin.news.edit', ['news' => $key]) }}">Редактировать</a>
+                            <a href="{{ route('admin.news.edit', ['news' => $news->id]) }}">Редактировать</a>
                             <a href="#">Удалить</a>
                         </td>
                     </tr>

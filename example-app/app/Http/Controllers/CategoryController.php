@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-//        foreach ($this->categoryList as $category) {
-//            echo "<h3>$category</h3>";
-//        }
-        return view( 'category.index', ['categoryList'=> $this->categoryList]);
+        $categories = (new Category())->getCategories();
+        return view( 'category.index', ['categoryList'=> $categories]);
     }
     public function show(int $id)
     {

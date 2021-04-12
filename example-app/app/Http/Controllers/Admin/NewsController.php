@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -14,8 +15,8 @@ class NewsController extends Controller
      */
     public function index()
     {
-//        return '<h2>Список новостей в админке</h2>';
-        return view( 'admin.news.index', ['newsList'=> $this->newsList]);
+        $news = (new News())->getNews(true);
+        return view( 'admin.news.index', ['newsList'=> $news]);
     }
 
     /**
