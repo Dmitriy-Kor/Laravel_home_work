@@ -7,11 +7,26 @@
 
     <!-- Content Row -->
     <div class="row">
-        <form>
-            <input type="text" placeholder="Заголовок">
-            <input type="text" placeholder="Автор">
-            <input type="submit" value="Создать">
-        </form>
+        <div class="col-8">
+            <form method="post" action="{{route('admin.categories.store')}}">
+                @csrf
+                @if($errors->any())
+                    @foreach($errors->all() as $error)
+                        <div class="alert alert-danger">{{$error}}</div>
+                    @endforeach
+                @endif
+                <div class="form-group">
+                    <label for="title">Название новой категории</label>
+                    <input type="text" id="title" name="title" placeholder="Назваение" class="form-control" value="{{old('title')}}">
+                </div>
+                <div class="form-group">
+                    <label for="slug">Слаг</label>
+                    <input type="text" id="slug" name="slug" placeholder="Слаг" class="form-control" value="{{old('slug')}}">
+                </div>
+                <br>
+                <button type="submit" class="btn btn-success">Создать</button>
+            </form>
+        </div>
     </div>
 
 @endsection

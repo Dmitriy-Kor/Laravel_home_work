@@ -17,14 +17,14 @@ use \App\Http\Controllers\NewsController;
 use \App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use \App\Http\Controllers\Admin\CategoryController as AdminCategoriesController;
 use \App\Http\Controllers\CategoryController;
-use \App\Http\Controllers\HomeController;
+use \App\Http\Controllers\ContactController;
 
 
 // роутинг для Админа
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () { // создаем префикс Admin для запросов // добавляем нейминг
     Route::resource('/news', AdminNewsController::class);
     Route::resource('/categories', AdminCategoriesController::class);
-    Route::resource('/categories/{id}/edit', AdminCategoriesController::class);
+
 });
 
 Route::get('/news', [NewsController::class, 'index']
@@ -39,5 +39,7 @@ Route::get('/categories/show/{id}', [CategoryController::class, 'show'])
     ->where('id', '\d')
     ->name('categories.show');
 
-//Route::get('/', [HomeController::class, 'index']);
-Route::get('/', [NewsController::class, 'index']);
+Route::get('/', [NewsController::class, 'index'])->name('home');
+
+Route::get('/contact',[ContactController::class, 'index'])->name('contact');
+Route::post('/contact/store',[ContactController::class, 'store'])->name('contact.store');
