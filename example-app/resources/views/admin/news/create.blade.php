@@ -17,10 +17,10 @@
             @endif
             <div class="form-group">
                 <label for="category_id">Выбирите новосную категорию</label>
-                <select name="category_id" id="category" class="form-control">
+                <select name="category_id" id="category_id" class="form-control">
                     <option>Выбирите категорию</option>
                     @foreach($categoryList as $category)
-                        <option>{{$category[0]}}</option>
+                        <option value="{{$category->id}}">{{$category->title}}</option>
                     @endforeach
                 </select>
             </div>
@@ -33,8 +33,17 @@
                 <input type="text" id="slug" name="slug" placeholder="Слаг" class="form-control" value="{{old('slug')}}">
             </div>
             <div class="form-group">
-                <label for="title">Описание</label>
+                <label for="text">Описание</label>
                 <textarea type="text" id="description" name="description" placeholder="Описание" class="form-control" >{!! old('description') !!}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="status">Выбирите новосную категорию</label>
+                <select name="status" id="category_id" class="form-control">
+                    <option>Выбирите статус</option>
+                    <option value="{{\App\Enums\NewsStatusEnum::PUBLISHED}}">Опубликовать</option>
+                    <option value="{{\App\Enums\NewsStatusEnum::BLOCKED}}">Блокировать</option>
+                    <option value="{{\App\Enums\NewsStatusEnum::DRAFT}}">Черновик</option>
+                </select>
             </div>
             <br>
             <button type="submit" class="btn btn-success">Сохранить</button>

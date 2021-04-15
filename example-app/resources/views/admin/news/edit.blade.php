@@ -11,17 +11,31 @@
 
         <form method="post" action="{{route('admin.news.update', ['news' => $news])}}">
             @csrf
+            @method('PUT')
             <div class="form-group">
                 <label for="title">Загаловок</label>
-                <input type="text" id="title" name="title" placeholder="Заголовок" class="form-control" value="{{old('title')}}">
+                <input type="text" id="title" name="title" placeholder="Заголовок" class="form-control" value="{{$news->title}}">
+            </div>
+{{--            <div class="form-group">--}}
+{{--                <label for="title">Автор</label>--}}
+{{--                <input type="text" id="author" name="author" placeholder="Автор" class="form-control" value="{{old('author')}}">--}}
+{{--            </div>--}}
+            <div class="form-group">
+                <label for="slug">Слаг</label>
+                <input type="text" id="slug" name="slug" placeholder="Слаг" class="form-control" value="{{$news->slug}}">
             </div>
             <div class="form-group">
-                <label for="title">Автор</label>
-                <input type="text" id="author" name="author" placeholder="Автор" class="form-control" value="{{old('author')}}">
+                <label for="text">Текст</label>
+                <textarea id="text" name="text"  class="form-control">{{$news->text}}</textarea>
             </div>
             <div class="form-group">
-                <label for="title">Текст</label>
-                <textarea id="text" name="text" placeholder="Текст новости" class="form-control" value="{{old('text')}}"></textarea>
+                <label for="status">Выбирите новосную категорию</label>
+                <select name="status" id="category_id" class="form-control">
+                    <option>Выбирите статус</option>
+                    <option value="{{\App\Enums\NewsStatusEnum::PUBLISHED}}">Опубликовать</option>
+                    <option value="{{\App\Enums\NewsStatusEnum::BLOCKED}}">Черновик</option>
+                    <option value="{{\App\Enums\NewsStatusEnum::DRAFT}}">Блокировть</option>
+                </select>
             </div>
             <br>
             <button type="submit" class="btn btn-success">Сохранить</button>

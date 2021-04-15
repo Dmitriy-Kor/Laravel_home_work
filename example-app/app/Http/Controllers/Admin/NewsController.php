@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\NewsStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -15,8 +17,8 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = (new News())->getNews(true);
-        return view( 'admin.news.index', ['newsList'=> $news]);
+        $news = News::select(['id', 'title', 'image', 'text', 'created_at','status'])->paginate(5);
+        return view( 'admin.news.index', ['newsList'=> $news, 'count' => News::count()]);
     }
 
     /**
@@ -26,7 +28,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view( 'admin.news.create',  ['categoryList'=> $this->categoryList]);
+        return view( 'admin.news.create',  ['categoryList'=> Category::where('is_visible', true)->get()]);
     }
 
     /**
@@ -39,11 +41,14 @@ class NewsController extends Controller
     {
         $request->validate([
             'title' => ['required', 'string', 'min:2'],
-            'slug' => ['required', 'string', 'min:2'],
             'description' => ['required', 'string', 'min:2'],
             ]);
-        $dataFields = $request->only('title', 'slug', 'description');
-        dump($dataFields);
+        $dataFields = $request->only('title', 'text', 'category_id', 'slug', 'status');
+        $news= News::create($dataFields);
+        if($news) {
+            return redirect()->route('admin.news.index')->with('success', 'Новость успешно добавлена');
+        }
+        return back()->with('error', 'не удалось добавить новость');
     }
 
     /**
@@ -65,7 +70,8 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        return view( 'admin.news.edit', ['news' => $id]);
+        $news = News::findOrfail($id);
+        return view( 'admin.news.edit', ['news' => $news]);
 
     }
 
@@ -76,11 +82,14 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, News $news)
     {
-        //$dataFields = $request->only('title', 'author', 'text');
-        $dataFields = $request->all();
-        dump($id, $dataFields);
+        $dataFields = $request->only('title', 'text', 'category_id', 'slug', 'status');
+        $news = $news->fill($dataFields)->save();
+        if($news) {
+            return redirect()->route('admin.news.index')->with('success', 'Новость успешно изменена');
+        }
+        return back()->with('error', 'не удалось изменить новость');
     }
 
 
@@ -93,6 +102,10 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $news = News::findOrFail($id);
+        if($news) {
+            $news->delete();
+        }
+        return redirect()->route('admin.news.index');
     }
 }

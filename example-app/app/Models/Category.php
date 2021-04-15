@@ -4,15 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
     use HasFactory;
+
     protected $table = 'categories';
-    public function  getCategories()
+    protected $fillable = ['title', 'description', 'is_visible'];
+    protected $casts = ['is_visible' => 'boolean'];
+    protected $guarded = ['id'];
+
+    public function getNewsForThisCategory(): HasMany
     {
-        return \DB::table($this->table)->select(['id','title','created_at','image'])
-            ->where('is_visible', true)
-            ->get();
+        return $this->hasMany( News::class, 'category_id','id');
     }
 }
