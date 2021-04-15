@@ -19,15 +19,13 @@
             </tr>
             </thead>
             <tbody>
-            @forelse($categoryList as $key => $category)
+            @forelse($categories as $category)
                 <tr>
-                    <td>{{$key}}</td>
-                    <td>{{$category[0]}}</td>
-                    <td>{{now()}}</td>
+                    <td>{{$category->id}}</td>
+                    <td>{{$category->title}}</td>
+                    <td>{{ $category->created_at ?? now()}}</td>
                     <td>
-{{--                        <a href="#">Редактировать</a>--}}
-                                                    <a href="{{ route('admin.categories.edit', ['category' => $key]) }}">Редактировать</a>
-                        {{--                        думаю проблема с роутом для admin, как передать id?--}}
+                        <a href="{{ route('admin.categories.edit', ['category' => $category->id]) }}">Редактировать</a>
                         <a href="#">Удалить</a>
                     </td>
                 </tr>

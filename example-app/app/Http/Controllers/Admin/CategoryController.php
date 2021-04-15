@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
 
@@ -15,7 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view( 'admin.category.index', ['categoryList'=> $this->categoryList]);
+        $categories = (new Category())->getCategories();
+        return view( 'admin.category.index', ['categories'=> $categories]);
     }
 
     /**

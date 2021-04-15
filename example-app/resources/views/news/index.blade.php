@@ -16,17 +16,15 @@
     </header>
 
     @if(count($newsList)>0)
-    @foreach ($newsList as $key => $news)
+    @foreach ($newsList as $news)
         <div class="post-preview">
-            <a href="{{ route('news.show', ['id' => ++$key]) }}">
+            <a href="{{ route('news.show', ['id' => $news->id]) }}">
                 <h2 class="post-title">
-                    {!!$news!!}
+                    {!!$news->title!!}
                 </h2>
                 {{-- <h3 class="post-subtitle">We predict too much for the next year and yet far too little for the next ten.</h3> --}}
             </a>
-            <p class="post-meta">Posted by Admin
-
-                {{ now() }}</p>
+            <p class="post-meta">Posted by Admin {{ $news->created_at ?? now() }}</p>
         </div>
         <hr>
     @endforeach

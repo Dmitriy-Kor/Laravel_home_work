@@ -16,11 +16,11 @@
     </header>
 
     @if(count($categoryList)>0)
-        @foreach ($categoryList as $key => $category)
-            <div class="category" style="background-image: url({{asset('assets/img/'. $category[1])}})">
+        @foreach ($categoryList as $category)
+            <div class="category" style="background-image: url({{asset('assets/img/'. $category->image)}})">
                 <div class="category_box">
-                    <a class="category_link" href="{{ route('categories.show', ['id' => $key]) }}">
-                        <h2>{{$category[0]}}</h2>
+                    <a class="category_link" href="{{ route('categories.show', ['id' => $category->id]) }}">
+                        <h2>{{$category->title}}</h2>
                     </a>
                     <p class="category_p">Обновлено {{ now() }}</p>
                 </div>
