@@ -16,16 +16,26 @@
                     @endforeach
                 @endif
                 <div class="form-group">
-                    <label for="title">Название новой категории</label>
-                    <input type="text" id="title" name="title" placeholder="Назваение" class="form-control" value="{{old('title')}}">
+                    @if($errors->has('title'))
+                        @foreach($errors->get('title') as $error)
+                            <label for="title">{{ $error }}</label>
+                        @endforeach
+                    @else
+                        <label for="title">Наименование новой категории</label>
+                    @endif
+                    <input type="text" id="title" name="title" @error('title') style="border: red 1px solid;" @enderror placeholder="Наименование" class="form-control" value="{{old('title')}}">
+
                 </div>
-{{--                <div class="form-group">--}}
-{{--                    <label for="slug">Слаг</label>--}}
-{{--                    <input type="text" id="slug" name="slug" placeholder="Слаг" class="form-control" value="{{old('slug')}}">--}}
-{{--                </div>--}}
                 <div class="form-group">
-                    <label for="title">Описание</label>
-                    <textarea type="text" id="description" name="description" placeholder="Описание" class="form-control" >{!! old('description') !!}</textarea>
+                    @if($errors->has('description'))
+                        @foreach($errors->get('description') as $error)
+                            <label for="description">{{ $error }}</label>
+                        @endforeach
+                    @else
+                        <label for="description">Описание новой категории</label>
+                    @endif
+
+                    <textarea type="text" id="description" name="description" @error('description') style="border: red 1px solid;" @enderror placeholder="Описание" class="form-control" >{!! old('description') !!}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="is_visible">Отобразить</label>
