@@ -5,29 +5,17 @@ namespace App\Models;
 use App\Enums\NewsStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends Model
 {
     use HasFactory;
     protected $table = 'news';
+    protected $fillable = ['title', 'text', 'category_id', 'slug', 'status'];
+    protected $guarded = ['id'];
 
-    public function getNews($is_admin = false)
+    public function  CategoryForThisNews(): BelongsTo
     {
-        if(!$is_admin) {
-            return \DB::table($this->table)
-                ->select(['id', 'title', 'image', 'text', 'created_at','status'])
-                ->where('status', NewsStatusEnum::PUBLISHED)
-                ->get();
-        }
-        return \DB::table($this->table)
-            ->select(['id', 'title', 'image', 'text', 'created_at','status'])
-            ->get();
-    }
-    public function getNewsById(int $id)
-    {
-        return \DB::table($this->table)
-            ->select(['id','title','image','text','created_at','status'])
-            ->where('id', '=', $id)
-            ->first();
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 }

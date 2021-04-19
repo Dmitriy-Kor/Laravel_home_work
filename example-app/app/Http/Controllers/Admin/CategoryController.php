@@ -16,8 +16,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = (new Category())->getCategories();
-        return view( 'admin.category.index', ['categories'=> $categories]);
+//        $categories = Category::where('is_visible', true)->get();
+        $categories = Category::select(['id','title','description','is_visible','created_at'])->paginate(5);
+        return view( 'admin.category.index', ['categories'=> $categories, 'count' => Category::count()]);
     }
 
     /**
@@ -40,10 +41,14 @@ class CategoryController extends Controller
     {
         $request->validate([
             'title' => ['required', 'string', 'min:2'],
-            'slug' => ['required', 'string', 'min:2']
+            'description' => ['required', 'string', 'min:10']
         ]);
-        $dataFields = $request->only('title', 'slug');
-        dump($dataFields);
+        $dataFields = $request->only('title','description','is_visible');
+        $category = Category::create($dataFields);
+        if($category) {
+            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно добавлена');
+        }
+        return back()->with('error', 'не удалось добавить запись');
     }
 
     /**
@@ -63,9 +68,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        return view( 'admin.category.edit', ['category' => $id]);
+        //$category = Category::findOrFail($id); //ищем нужную категорию по id
+        return view( 'admin.category.edit', ['category' => $category]);
     }
 
     /**
@@ -75,9 +81,23 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'min:2'],
+            'description' => ['required', 'string', 'min:10']
+        ]);
+
+        $dataFields = $request->only('title','description','is_visible');
+        if(!isset($dataFields['is_visible'])) {
+            $dataFields['is_visible'] = 0;
+
+        }
+        $category = $category->fill($dataFields)->save();
+        if($category) {
+            return redirect()->route('admin.categories.index')->with('success', 'Категория успешно изменена');
+        }
+        return back()->with('error', 'не удалось изменить категорию');
     }
 
     /**
@@ -90,4 +110,5 @@ class CategoryController extends Controller
     {
         //
     }
+
 }

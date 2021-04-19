@@ -14,7 +14,9 @@
                         <!-- Подзоголовок -->
 {{--                        <h2 class="subheading">Problems look mighty small from 150 miles up</h2>--}}
                         <!-- Автор -->
-                        <span class="meta">Posted by Admin on {{ $news->created_at ?? now() }}</span>
+                        <span class="meta">Posted by Admin on {{ $news->created_at ?? now() }}
+                        <i>Категория: {{$news->CategoryForThisNews->title }}</i>
+                        </span>
                     </div>
                 </div>
             </div>

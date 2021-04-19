@@ -24,7 +24,9 @@
                 </h2>
                 {{-- <h3 class="post-subtitle">We predict too much for the next year and yet far too little for the next ten.</h3> --}}
             </a>
-            <p class="post-meta">Posted by Admin {{ $news->created_at ?? now() }}</p>
+            <p class="post-meta">Posted by Admin {{ $news->created_at ?? now() }}
+                <i>Категория: {{$news->CategoryForThisNews->title }}</i>
+            </p>
         </div>
         <hr>
     @endforeach

@@ -19,10 +19,20 @@
                     <label for="title">Название новой категории</label>
                     <input type="text" id="title" name="title" placeholder="Назваение" class="form-control" value="{{old('title')}}">
                 </div>
+{{--                <div class="form-group">--}}
+{{--                    <label for="slug">Слаг</label>--}}
+{{--                    <input type="text" id="slug" name="slug" placeholder="Слаг" class="form-control" value="{{old('slug')}}">--}}
+{{--                </div>--}}
                 <div class="form-group">
-                    <label for="slug">Слаг</label>
-                    <input type="text" id="slug" name="slug" placeholder="Слаг" class="form-control" value="{{old('slug')}}">
+                    <label for="title">Описание</label>
+                    <textarea type="text" id="description" name="description" placeholder="Описание" class="form-control" >{!! old('description') !!}</textarea>
                 </div>
+                <div class="form-group">
+                    <label for="is_visible">Отобразить</label>
+                    <input type="checkbox" id="is_visible" name="is_visible" value="1" @if (boolval(old('is_visible')) === true) checked @endif">
+                </div>
+
+
                 <br>
                 <button type="submit" class="btn btn-success">Создать</button>
             </form>
