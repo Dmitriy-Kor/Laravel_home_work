@@ -6,8 +6,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <title>АDминка</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('assets/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -19,6 +20,8 @@
     <link href="{{asset('assets/css/sb-admin-2.min.css')}}" rel="stylesheet">
 
 </head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <body id="page-top">
 
@@ -58,7 +61,6 @@
 
 <!-- Core plugin JavaScript-->
 <script src="{{asset('assets/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
-
 <!-- Custom scripts for all pages-->
 <script src="{{asset('assets/js/sb-admin-2.min.js')}}"></script>
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CrateCategory;
+use App\Http\Requests\UpdateCategory;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
@@ -12,7 +14,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -24,7 +26,7 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
     {
@@ -34,17 +36,14 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param CrateCategory $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CrateCategory $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:2'],
-            'description' => ['required', 'string', 'min:10']
-        ]);
         $dataFields = $request->only('title','description','is_visible');
         $category = Category::create($dataFields);
+
         if($category) {
             return redirect()->route('admin.categories.index')->with('success', 'Запись успешно добавлена');
         }
@@ -81,12 +80,8 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategory $request, Category $category)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:2'],
-            'description' => ['required', 'string', 'min:10']
-        ]);
 
         $dataFields = $request->only('title','description','is_visible');
         if(!isset($dataFields['is_visible'])) {
@@ -106,9 +101,17 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        try {
+            if (request()->ajax()) {
+                $category->delete();
+
+                return response()->json(['success' => true]);
+            }
+        }catch(\Exception $e) {
+            return response()->json(['success' => false]);
+        }
     }
 
 }

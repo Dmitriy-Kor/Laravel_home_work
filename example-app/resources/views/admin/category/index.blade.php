@@ -3,7 +3,8 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Список категории. (Всего категорий: {{ $count }})</h1>
-        <a href="{{ route('admin.categories.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        <a href="{{ route('admin.categories.create') }}"
+           class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                 class="fas fa-plus fa-sm text-white-50"></i> Добавить категорию</a>
     </div>
 
@@ -37,11 +38,11 @@
                     <td>{{ $category->created_at ?? now()}}</td>
                     <td>
                         <a href="{{ route('admin.categories.edit', ['category' => $category]) }}">Редактировать</a>
-                        <a href="#">Удалить</a>
+                        <a href="javascript:;" class="delete" rel="{{$category->id}}">Уд.</a>
                     </td>
                 </tr>
             @empty
-                <h2>D`OH</h2>>
+                <h2>Категорий нет</h2>>
             @endforelse
 
 
@@ -51,3 +52,26 @@
     </div>
 
 @endsection
+@push('js')
+    <script>
+        $(function() {
+            $(".delete").on('click', function() {
+                let id = $(this).attr('rel');
+                if (confirm("Подтверждаете?")) {
+                    $.ajax({
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'Content-Type': 'application/json',
+                        },
+                        url: "/admin/categories/" + id,
+                        complete: function (response) {
+                            alert("Запись с ID" + id + " удалена");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush
+

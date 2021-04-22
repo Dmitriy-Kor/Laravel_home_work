@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\NewsStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateNews;
+use App\Http\Requests\UpdateNews;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -34,15 +36,10 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateNews $request)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:2'],
-            'description' => ['required', 'string', 'min:2'],
-            ]);
         $dataFields = $request->only('title', 'text', 'category_id', 'slug', 'status');
         $news= News::create($dataFields);
         if($news) {
@@ -71,7 +68,7 @@ class NewsController extends Controller
     public function edit($id)
     {
         $news = News::findOrfail($id);
-        return view( 'admin.news.edit', ['news' => $news]);
+        return view( 'admin.news.edit', ['news' => $news, 'categoryList'=> Category::where('is_visible', true)->get()]);
 
     }
 
@@ -82,7 +79,7 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(UpdateNews $request, News $news)
     {
         $dataFields = $request->only('title', 'text', 'category_id', 'slug', 'status');
         $news = $news->fill($dataFields)->save();
@@ -97,15 +94,20 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param News $news
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(News $news)
     {
-        $news = News::findOrFail($id);
-        if($news) {
-            $news->delete();
+        try {
+            if (request()->ajax()) {
+                $news->delete();
+
+                return response()->json(['success' => true]);
+            }
+        }catch(\Exception $e) {
+            return response()->json(['success' => false]);
         }
-        return redirect()->route('admin.news.index');
     }
 }

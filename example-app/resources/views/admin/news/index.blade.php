@@ -30,9 +30,8 @@
                         <td>{{$news->status}}</td>
                         <td>{{$news->created_at ?? now()}}</td>
                         <td>
-{{--                            <a href="#">Редактировать</a>--}}
                             <a href="{{ route('admin.news.edit', ['news' => $news->id]) }}">Редактировать</a>
-                            <a href="{{ route('admin.news.destroy', ['news' => $news->id]) }}">Удалить</a>
+                            <a href="javascript:;" class="delete" id="link_delete" rel="{{$news->id}}">Уд.</a>
                         </td>
                     </tr>
                 @empty
@@ -45,4 +44,50 @@
         <div>{{ $newsList->links()}}</div>
     </div>
 
+    <script>
+        $(function() {
+            $(".delete").on('click', function() {
+                let id = $(this).attr('rel');
+                console.log(id);
+                if (confirm("Подтверждаете?")) {
+                    $.ajax({
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'Content-Type': 'application/json',
+                        },
+                        url: "/admin/news/" + id,
+                        complete: function (response) {
+                            alert("Запись с ID" + id + " удалена");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
 @endsection
+
+@push('js')
+    <script>
+        $(function() {
+            $(".delete").on('click', function() {
+                let id = $(this).attr('rel');
+                console.log(id);
+                if (confirm("Подтверждаете?")) {
+                    $.ajax({
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'Content-Type': 'application/json',
+                        },
+                        url: "/admin/news/" + id,
+                        complete: function (response) {
+                            alert("Запись с ID" + id + " удалена");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush
