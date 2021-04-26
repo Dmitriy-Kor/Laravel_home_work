@@ -20,9 +20,12 @@ use \App\Http\Controllers\Admin\CategoryController as AdminCategoriesController;
 use \App\Http\Controllers\CategoryController;
 use \App\Http\Controllers\ContactController;
 use App\Http\Controllers\Account\AccountController as AccountController;
+use App\Http\Controllers\HomeController as HomeController;
+use \App\Http\Controllers\ParserController as ParserController;
+use \App\Http\Controllers\SocialiteController as SocialiteController;
 
-Route::group(['middleware' => 'auth'], function(){
-    Route::get('/logout', function (){
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/logout', function () {
         Auth::logout();
         return redirect()->route('login');
     });
@@ -38,9 +41,8 @@ Route::group(['middleware' => 'auth'], function(){
 });
 
 
-
-Route::get('/news', [NewsController::class, 'index']
-)->name('news');
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news');
 
 Route::get('/news/show/{id}', [NewsController::class, 'show'])
     ->where('id', '\d+')
@@ -53,9 +55,22 @@ Route::get('/categories/show/{id}', [CategoryController::class, 'show'])
 
 Route::get('/', [NewsController::class, 'index'])->name('home');
 
-Route::get('/contact',[ContactController::class, 'index'])->name('contact');
-Route::post('/contact/store',[ContactController::class, 'store'])->name('contact.store');
+Route::get('/contact', [ContactController::class, 'index'])
+    ->name('contact');
+Route::post('/contact/store', [ContactController::class, 'store'])
+    ->name('contact.store');
+
+// guest
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => 'guest'], function() {
+    Route::get('/auth/vkontakte', [SocialiteController::class, 'init'])
+        ->name('vk.init');
+    Route::get('/auth/vkontakte/callback', [SocialiteController::class, 'callback'])
+        ->name('vk.callback');
+});
+
+Route::get('/home', [HomeController::class, 'index'])
+    ->name('home');
+Route::get('/parsing', [ParserController::class, '__invoke']);
