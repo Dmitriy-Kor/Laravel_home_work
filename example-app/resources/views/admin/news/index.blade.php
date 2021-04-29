@@ -44,28 +44,6 @@
         <div>{{ $newsList->links()}}</div>
     </div>
 
-    <script>
-        $(function() {
-            $(".delete").on('click', function() {
-                let id = $(this).attr('rel');
-                console.log(id);
-                if (confirm("Подтверждаете?")) {
-                    $.ajax({
-                        method: "delete",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            'Content-Type': 'application/json',
-                        },
-                        url: "/admin/news/" + id,
-                        complete: function (response) {
-                            alert("Запись с ID" + id + " удалена");
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-
 @endsection
 
 @push('js')

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\NewsController;
 use \App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use \App\Http\Controllers\Admin\CategoryController as AdminCategoriesController;
+use \App\Http\Controllers\Admin\ParserSourceController as AdminParserSourceController;
 use \App\Http\Controllers\CategoryController;
 use \App\Http\Controllers\ContactController;
 use App\Http\Controllers\Account\AccountController as AccountController;
@@ -36,6 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function () { // создаем префикс Admin для запросов // добавляем нейминг
         Route::resource('/news', AdminNewsController::class);
         Route::resource('/categories', AdminCategoriesController::class);
+        Route::resource('/resources', AdminParserSourceController::class);
 
     });
 });

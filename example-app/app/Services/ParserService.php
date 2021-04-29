@@ -3,7 +3,10 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Storage;
 use Orchestra\Parser\Xml\Facade as XmlParser;
+use Psy\Util\Str;
+
 class ParserService
 {
     protected string $url;
@@ -17,7 +20,7 @@ class ParserService
     public function parsing(): array
     {
         $xml = XmlParser::load($this->url);
-        return $xml->parse([
+        $data = $xml->parse([
             'title' => [
                 'uses' => 'channel.title'
             ],
@@ -34,5 +37,10 @@ class ParserService
                 'uses' => 'channel.item[title,link,guid,description,pubDate]'
             ]
         ]);
+        $e = explode('/', $this->url);
+        $fileName = end($e);
+        Storage::append('parsing/' . $fileName . '.txt', json_encode($data));
+
+        return $data;
     }
 }

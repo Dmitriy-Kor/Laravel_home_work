@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-8">
 
-        <form method="post" action="{{route('admin.news.update', ['news' => $news])}}">
+        <form method="post" action="{{route('admin.news.update', ['news' => $news])}}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -43,6 +43,13 @@
             </div>
 
             <div class="form-group">
+                <label for="image">Изображение</label>
+                <img src="{{ \Storage::disk('public')->url($news->image)}}">
+                <input type="file" id="image" name="image" @error('image') style="border: red 1px solid;" @enderror placeholder="Изоображение" class="form-control" value="{{$news->image}}">
+            </div>
+
+
+            <div class="form-group">
                 <label for="status">Выбирите новосную категорию</label>
                 <select name="status" id="status" class="form-control" @error('status') style="border: red 1px solid;" @enderror>
                     <option>Выбирите статус</option>
@@ -61,5 +68,17 @@
 
     </div>
 
-
 @endsection
+@push('js')
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#text' ) )
+            .then( editor => {
+                console.log( editor );
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+@endpush

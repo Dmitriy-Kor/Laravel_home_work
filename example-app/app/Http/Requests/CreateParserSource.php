@@ -1,10 +1,11 @@
 <?php
 
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateNews extends FormRequest
+class CreateParserSource extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,16 +22,12 @@ class UpdateNews extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'min:3', 'max:100'],
-            'text' => ['required', 'string', 'min:10'],
-            'slug' => ['required', 'string', 'min:3', 'max:100'],
-            'status' => ['required'],
-            'category_id' => ['required'],
-            'image' => ['sometimes', 'image:jpg,jpeg,png']
-
+            'url' => ['required', 'string', 'min:3', 'max:255'],
+            'description' => ['required', 'string', 'min:10'],
+            'is_visible' => ['sometimes']
         ];
     }
 }

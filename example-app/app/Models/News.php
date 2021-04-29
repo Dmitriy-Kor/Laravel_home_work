@@ -11,7 +11,7 @@ class News extends Model
 {
     use HasFactory;
     protected $table = 'news';
-    protected $fillable = ['title', 'text', 'category_id', 'slug', 'status'];
+    protected $fillable = ['title', 'text', 'category_id', 'slug', 'status', 'image'];
     protected $guarded = ['id'];
 
     public function  CategoryForThisNews(): BelongsTo

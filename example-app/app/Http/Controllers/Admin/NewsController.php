@@ -81,8 +81,21 @@ class NewsController extends Controller
      */
     public function update(UpdateNews $request, News $news)
     {
-        $dataFields = $request->only('title', 'text', 'category_id', 'slug', 'status');
+        $dataFields = $request->only('title', 'text', 'category_id', 'slug', 'status', 'image');
+
+
+        if($request->hasFile('image')) { // апровиряем есть ли файл изображения
+            $image = $request->file('image'); // получаем файл
+            //$originalName = $image->getClientOriginalName(); // Получаем оригинальное ( которое было при выборе файла) имя файла
+            $originalExt = $image->getClientOriginalExtension(); // Получаем оригинальное расширение файла
+            $fileName = uniqid(); // генерируем новое имя
+            $fileLink = $image->storeAs('news',$fileName . '.' . $originalExt, 'public'); // сохраняем файл
+            $dataFields['image'] = $fileLink;
+        }
+
         $news = $news->fill($dataFields)->save();
+
+
         if($news) {
             return redirect()->route('admin.news.index')->with('success', 'Новость успешно изменена');
         }
